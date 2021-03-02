@@ -76,7 +76,6 @@ const App = () => {
           <div className="answer-section">
             {Quiz[currentText].answers.map((answer) => (
               <button
-                key={Quiz.id}
                 value={Quiz.text}
                 onClick={() => handleClick(answer.isTrue)}
               >
