@@ -1,84 +1,86 @@
+// app.js
 import React, { useState } from "react";
 import "./App.css";
 
+const Quiz = [
+  {
+    id: 1,
+    question: "현재 네이버 CEO 이름은?",
+    answers: [
+      { text: "한성숙", isTrue: true },
+      { text: "김범수", isTrue: false },
+      { text: "김봉진", isTrue: false },
+      { text: "김범석", isTrue: false },
+    ],
+  },
+  {
+    id: 2,
+    question: "네이버의 설립 연도는?",
+    answers: [
+      { text: "2002년", isTrue: false },
+      { text: "2001년", isTrue: false },
+      { text: "2000년", isTrue: false },
+      { text: "1999년", isTrue: true },
+    ],
+  },
+  {
+    id: 3,
+    question: "네이버의 본사 위치는?",
+    answers: [
+      { text: "경기도 화성시 능동", isTrue: false },
+      { text: "경기도 성남시 분당구", isTrue: true },
+      { text: "충청남도 공주시 조평리", isTrue: false },
+      { text: "제주특별자치도 제주시 애월읍", isTrue: false },
+    ],
+  },
+];
+
 const App = () => {
-  const [currentNo, setCurrentNo] = useState(0);
-  const [showResult, setShowResult] = useState(false);
+  const [currentText, setCurrentText] = useState(0);
+  const [resultPage, setResultPage] = useState(false);
   const [score, setScore] = useState(0);
+  const convertScore = Math.floor((score / Quiz.length) * 100)
 
-  const Quiz = [
-    {
-      id: 1,
-      question: "현재 네이버 CEO 이름은?",
-      answers: [
-        { text: "한성숙", isCorrect: true },
-        { text: "김범수", isCorrect: false },
-        { text: "김봉진", isCorrect: false },
-        { text: "김범석", isCorrect: false },
-      ],
-    },
-    {
-      id: 2,
-      question: "네이버의 설립 연도는?",
-      answers: [
-        { text: "2002년", isCorrect: false },
-        { text: "2001년", isCorrect: false },
-        { text: "2000년", isCorrect: false },
-        { text: "1999년", isCorrect: true },
-      ],
-    },
-    {
-      id: 3,
-      question: "네이버의 본사 위치는?",
-      answers: [
-        { text: "경기도 화성시 능동", isCorrect: false },
-        { text: "경기도 성남시 분당구", isCorrect: true },
-        { text: "충청남도 공주시 조평리", isCorrect: false },
-        { text: "제주특별자치도 제주시 애월읍", isCorrect: false },
-      ],
-    },
-  ];
-  const convertScore = parseInt(score/Quiz.length * 100);
-
-  const handleClick = (isCorrect) => {
-    if (isCorrect) {
-      alert("정답입니다.");
-      setScore((score) => score + 1);
+  const handleClick = (isTrue) => {
+    if (isTrue === true) {
+      setScore((score) => score + 1)
+      alert("정답이에요 👏🏽👏🏽");
     } else {
-      alert("오답입니다.");
+      alert("오답이에요 👏🏽👏🏽");
     }
 
-    if (currentNo === Quiz.length - 1) {
-      setShowResult(true);
+    if (currentText === Quiz.length - 1) {
+      setResultPage(true);
     } else {
-      setCurrentNo((currentNo) => currentNo + 1);
+      setCurrentText((currentText) => currentText + 1);
     }
   };
 
   return (
     <div className="container">
-      {showResult ? (
-        <div className="app">
-          <h1 class="result-header">당신의 점수는?</h1>
-          <p class="result-score">{convertScore}</p>
-        </div>
-      ) : (
+      {
+      resultPage === true 
+      ? (
+        <div className='app'>
+          <h1 className='result-header'>최종 점수는?</h1>
+          <p className='result-score'>{convertScore}</p>
+        </div>) 
+      : (
         <div className="app">
           <div className="question-section">
             <h1 className="question-header">
-              <span>{Quiz[currentNo].id}</span>/{Quiz.length}
+              <span>{Quiz[currentText].id}</span>/{Quiz.length}
             </h1>
-            <div className="question-text">{Quiz[currentNo].question}</div>
+            <div className="question-text">{Quiz[currentText].question}</div>
           </div>
           <div className="answer-section">
-            {Quiz[currentNo].answers.map((answers) => (
+            {Quiz[currentText].answers.map((answer) => (
               <button
-                value={answers.text}
-                onClick={() => {
-                  handleClick(answers.isCorrect);
-                }}
+                key={Quiz.id}
+                value={Quiz.text}
+                onClick={() => handleClick(answer.isTrue)}
               >
-                {answers.text}
+                {answer.text}
               </button>
             ))}
           </div>
